@@ -1,7 +1,10 @@
 package com.medialink.repoandlivesubmission.data.source.local.entity
 
+import android.os.Parcelable
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Genre
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Detail(
     val idType: Int, // 1 MOVIE, 2 TV SHOW
     val backdropPath: String? = null,
@@ -18,4 +21,4 @@ data class Detail(
     val title: String? = null,
     val voteAverage: Double? = null,
     val voteCount: Int? = null
-)
+): Parcelable

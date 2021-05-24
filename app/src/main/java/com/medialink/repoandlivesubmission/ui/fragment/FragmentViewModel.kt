@@ -1,11 +1,13 @@
 package com.medialink.repoandlivesubmission.ui.fragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
 import com.medialink.repoandlivesubmission.data.source.remote.repository.IRepository
+import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import com.medialink.repoandlivesubmission.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -15,16 +17,20 @@ class FragmentViewModel(private val repository: IRepository) : ViewModel() {
 
     init {
         fetchListData(1)
+        Log.d("TAG", repository::class.java.simpleName)
     }
 
     fun fetchListData(page: Int) {
+        EspressoIdlingResource.increment()
         viewModelScope.launch {
             _listData.postValue(Resource.loading(null))
             try {
                 val listFromApi = repository.getList(page)
                 _listData.postValue(Resource.success(listFromApi))
+                EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
                 _listData.postValue(Resource.error(null, message = e.message ?: "Error Occurred!"))
+                EspressoIdlingResource.decrement()
             }
         }
     }

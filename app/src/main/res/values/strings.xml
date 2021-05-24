@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">RepoAndLiveSubmission</string>
+    <string name="title_favorite">Favorite</string>
+
+    <string name="no_data">No Data</string>
+    <string name="description_poster">Poster Image</string>
+    <string name="title_share">Share</string>
+    <string name="label_title">Title</string>
+    <string name="label_release">Release Date</string>
+    <string name="label_vote">Average Vote</string>
+    <string name="label_overview">Overview</string>
+    <string name="label_airing">First Airing</string>
+
+    <string name="movie">Movies</string>
+    <string name="tv_show">Tv Shows</string>
+    <string name="error">Error</string>
+    <string name="splash_image">splash image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="summary">Summary</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
 </resources>
