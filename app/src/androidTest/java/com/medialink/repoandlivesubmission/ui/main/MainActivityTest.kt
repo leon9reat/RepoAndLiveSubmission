@@ -1,21 +1,27 @@
 package com.medialink.repoandlivesubmission.ui.main
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
+import android.os.SystemClock
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.*
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import com.google.android.material.tabs.TabLayout
 import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
+import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.OrientationChangeAction.Companion.orientationLandscape
+import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.OrientationChangeAction.Companion.orientationPortrait
 import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.RecyclerViewMatchers.hasItemCount
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking
@@ -27,7 +33,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+
 class MainActivityTest {
+
 
     @Before
     fun setUp() {
@@ -61,7 +69,7 @@ class MainActivityTest {
     fun test_LoadDataMovies() {
         val matcher = Matchers.allOf(
             withId(R.id.movies_rv),
-            ViewMatchers.isDisplayed()
+            isDisplayed()
         )
 
         val apiService = RetrofitClient.getApiService()
@@ -72,8 +80,8 @@ class MainActivityTest {
             i = x.size
         }
 
-        Espresso.onView(matcher).check(matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(matcher).check(matches((hasItemCount(i))))
+        onView(matcher).check(matches(isDisplayed()))
+        onView(matcher).check(matches((hasItemCount(i))))
     }
 
     @Test
@@ -81,14 +89,14 @@ class MainActivityTest {
 
         val tabs = Matchers.allOf(
             withText("Tv Shows"),
-            ViewMatchers.isDescendantOfA(withId(R.id.tabs))
+            isDescendantOfA(withId(R.id.tabs))
         )
-        Espresso.onView(tabs).perform(ViewActions.click())
-        Espresso.onView(withId(R.id.tabs)).check(matches(matchCurrentTabTitle("Tv Shows")))
+        onView(tabs).perform(ViewActions.click())
+        onView(withId(R.id.tabs)).check(matches(matchCurrentTabTitle("Tv Shows")))
 
         val matcher = Matchers.allOf(
             withId(R.id.movies_rv),
-            ViewMatchers.isDisplayed(),
+            isDisplayed(),
         )
 
         val apiService = RetrofitClient.getApiService()
@@ -99,8 +107,8 @@ class MainActivityTest {
             i = x.size
         }
 
-        Espresso.onView(matcher).check(matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(matcher).check(matches((hasItemCount(i))))
+        onView(matcher).check(matches(isDisplayed()))
+        onView(matcher).check(matches((hasItemCount(i))))
     }
 
 
@@ -108,20 +116,20 @@ class MainActivityTest {
     fun test_ButtonTvShowFavoriteClick() {
         val tabs = Matchers.allOf(
             withText("Tv Shows"),
-            ViewMatchers.isDescendantOfA(withId(R.id.tabs))
+            isDescendantOfA(withId(R.id.tabs))
         )
-        Espresso.onView(tabs).perform(ViewActions.click())
-        Espresso.onView(withId(R.id.tabs)).check(matches(matchCurrentTabTitle("Tv Shows")))
+        onView(tabs).perform(ViewActions.click())
+        onView(withId(R.id.tabs)).check(matches(matchCurrentTabTitle("Tv Shows")))
 
         val recycler = Matchers.allOf(
             withId(R.id.movies_rv),
-            ViewMatchers.isDisplayed()
+            isDisplayed()
         )
 
-        Espresso.onView(recycler)
-            .check(matches(ViewMatchers.hasDescendant(withText(R.string.title_favorite))))
+        onView(recycler)
+            .check(matches(hasDescendant(withText(R.string.title_favorite))))
         clickOnFavoriteAtRow(0, recycler)
-        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text))
+        onView(withId(R.id.snackbar_text))
             .check(matches(withText("Favorite")))
     }
 
@@ -129,13 +137,13 @@ class MainActivityTest {
     fun test_ButtonMovieFavoriteClick() {
         val recycler = Matchers.allOf(
             withId(R.id.movies_rv),
-            ViewMatchers.isDisplayed()
+            isDisplayed()
         )
 
-        Espresso.onView(recycler)
-            .check(matches(ViewMatchers.hasDescendant(withText(R.string.title_favorite))))
+        onView(recycler)
+            .check(matches(hasDescendant(withText(R.string.title_favorite))))
         clickOnFavoriteAtRow(0, recycler)
-        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text))
+        onView(withId(R.id.snackbar_text))
             .check(matches(withText("Favorite")))
     }
 
@@ -143,13 +151,13 @@ class MainActivityTest {
     fun test_ButtonMovieShareClick() {
         val recycler = Matchers.allOf(
             withId(R.id.movies_rv),
-            ViewMatchers.isDisplayed()
+            isDisplayed()
         )
 
-        Espresso.onView(recycler)
-            .check(matches(ViewMatchers.hasDescendant(withText(R.string.title_share))))
+        onView(recycler)
+            .check(matches(hasDescendant(withText(R.string.title_share))))
         clickOnShareAtRow(0, recycler)
-        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text))
+        onView(withId(R.id.snackbar_text))
             .check(matches(withText("Share")))
     }
 
@@ -157,22 +165,30 @@ class MainActivityTest {
     fun test_ButtonTvShowShareClick() {
         val tabs = Matchers.allOf(
             withText("Tv Shows"),
-            ViewMatchers.isDescendantOfA(withId(R.id.tabs))
+            isDescendantOfA(withId(R.id.tabs))
         )
-        Espresso.onView(tabs).perform(ViewActions.click())
-        Espresso.onView(withId(R.id.tabs)).check(matches(matchCurrentTabTitle("Tv Shows")))
+        onView(tabs).perform(ViewActions.click())
+        onView(withId(R.id.tabs)).check(matches(matchCurrentTabTitle("Tv Shows")))
 
 
         val recycler = Matchers.allOf(
             withId(R.id.movies_rv),
-            ViewMatchers.isDisplayed()
+            isDisplayed()
         )
 
-        Espresso.onView(recycler)
-            .check(matches(ViewMatchers.hasDescendant(withText(R.string.title_share))))
+        onView(recycler)
+            .check(matches(hasDescendant(withText(R.string.title_share))))
         clickOnShareAtRow(0, recycler)
-        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text))
+        onView(withId(R.id.snackbar_text))
             .check(matches(withText("Share")))
+    }
+
+    @Test
+    fun test_changeOrientation() {
+        SystemClock.sleep(1000)
+        onView(isRoot()).perform(orientationLandscape())
+        SystemClock.sleep(1000)
+        onView(isRoot()).perform(orientationPortrait())
     }
 
     private fun matchCurrentTabTitle(tabTitle: String): Matcher<View> {
@@ -194,13 +210,13 @@ class MainActivityTest {
     }
 
     private fun clickOnFavoriteAtRow(position: Int, view: Matcher<View>) {
-        Espresso.onView(view)
+        onView(view)
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>
                 (position, ClickOnButtonView()))
     }
 
     private fun clickOnShareAtRow(position: Int, view: Matcher<View>) {
-        Espresso.onView(view)
+        onView(view)
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>
                 (position, ClickOnShareButton()))
     }
@@ -236,6 +252,40 @@ class MainActivityTest {
         override fun perform(uiController: UiController?, view: View) {
             //btnClickMe -> Custom row item view button
             click.perform(uiController, view.findViewById(R.id.btn_share))
+        }
+    }
+
+    /**
+     * An Espresso ViewAction that changes the orientation of the screen
+     */
+    class OrientationChangeAction private constructor(private val orientation: Int) : ViewAction {
+        override fun getConstraints(): Matcher<View> {
+            return isRoot()
+        }
+
+        override fun getDescription(): String {
+            return "change orientation to $orientation"
+        }
+
+        override fun perform(uiController: UiController, view: View) {
+            uiController.loopMainThreadUntilIdle()
+            val activity = view.context as Activity
+            activity.requestedOrientation = orientation
+            val resumedActivities =
+                ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+            if (resumedActivities.isEmpty()) {
+                throw RuntimeException("Could not change orientation")
+            }
+        }
+
+        companion object {
+            fun orientationLandscape(): ViewAction {
+                return OrientationChangeAction(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+            }
+
+            fun orientationPortrait(): ViewAction {
+                return OrientationChangeAction(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+            }
         }
     }
 }

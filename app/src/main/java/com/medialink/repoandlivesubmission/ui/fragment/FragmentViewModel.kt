@@ -1,6 +1,5 @@
 package com.medialink.repoandlivesubmission.ui.fragment
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +16,6 @@ class FragmentViewModel(private val repository: IRepository) : ViewModel() {
 
     init {
         fetchListData(1)
-        Log.d("TAG", repository::class.java.simpleName)
     }
 
     fun fetchListData(page: Int) {

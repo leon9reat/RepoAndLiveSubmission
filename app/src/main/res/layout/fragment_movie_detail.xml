@@ -110,6 +110,7 @@
 
             <include
                 layout="@layout/trailers_and_reviews"
+                android:id="@+id/trailer_and_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"/>
@@ -131,5 +132,13 @@
         app:pressedTranslationZ="12dp"
         app:rippleColor="@android:color/white"
         tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

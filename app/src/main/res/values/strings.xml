@@ -20,4 +20,6 @@
     <string name="summary">Summary</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
+    <string name="movie_details">Movie Details</string>
+    <string name="rating">%s/10</string>
 </resources>

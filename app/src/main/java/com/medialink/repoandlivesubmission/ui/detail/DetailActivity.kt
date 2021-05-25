@@ -28,13 +28,11 @@ class DetailActivity : AppCompatActivity() {
         val item: Detail? = intent.getParcelableExtra(PARCEL_DETAIL)
 
         if (item != null) {
-
             if (item.idType == AppConfig.TYPE_MOVIE) {
-                val movieDetailsFragment = MovieDetailFragment()
+                val movieDetailsFragment = MovieDetailFragment.newInstance(item)
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.movie_details_container, movieDetailsFragment)
+                    .replace(R.id.movie_details_container, movieDetailsFragment)
                     .commit()
-                Log.d("TAG", "onCreate: "+item.title)
             }
         }
     }

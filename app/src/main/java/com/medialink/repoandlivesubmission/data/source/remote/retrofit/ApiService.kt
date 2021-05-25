@@ -3,6 +3,8 @@ package com.medialink.repoandlivesubmission.data.source.remote.retrofit
 import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.ListMovies
 import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.ListTv
 import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Movie
+import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.ReviewRespon
+import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.VideoRespon
 import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
 import retrofit2.Call
 import retrofit2.http.GET
@@ -34,4 +36,17 @@ interface ApiService {
         @Path("id") id: Int,
         @Query("language") language: String
     ): Movie
+
+    @GET("movie/{id}/reviews")
+    suspend fun  getMovieReview(
+        @Path("id") id: Int,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): ReviewRespon
+
+    @GET("movie/{id}/videos")
+    suspend fun getMovieVideo(
+        @Path("id") id: Int,
+        @Query("language") language: String
+    ): VideoRespon
 }
