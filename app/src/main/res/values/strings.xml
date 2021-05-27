@@ -16,10 +16,11 @@
     <string name="error">Error</string>
     <string name="splash_image">splash image</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="summary">Summary</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
     <string name="movie_details">Movie Details</string>
     <string name="rating">%s/10</string>
+    <string name="architecture_component">Repository and Live Data</string>
+    <string name="submission">Submission 2</string>
 </resources>

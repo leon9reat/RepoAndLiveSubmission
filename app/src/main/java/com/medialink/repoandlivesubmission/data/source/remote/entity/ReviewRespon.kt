@@ -1,4 +1,4 @@
-package com.medialink.repoandlivesubmission.data.source.remote.entity.movie
+package com.medialink.repoandlivesubmission.data.source.remote.entity
 
 
 import com.google.gson.annotations.SerializedName

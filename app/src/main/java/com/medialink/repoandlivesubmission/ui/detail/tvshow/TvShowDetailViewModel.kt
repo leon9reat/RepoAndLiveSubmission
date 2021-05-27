@@ -1,47 +1,47 @@
-package com.medialink.repoandlivesubmission.ui.detail.movie
+package com.medialink.repoandlivesubmission.ui.detail.tvshow
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
-import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Movie
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Review
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Video
+import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import com.medialink.repoandlivesubmission.utils.Resource
 import kotlinx.coroutines.launch
 
-class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
+class TvShowDetailViewModel(private val apiService: ApiService): ViewModel() {
 
-    private val _movie = MutableLiveData<Resource<Movie>>()
+    private val _tvShow = MutableLiveData<Resource<TvShow>>()
 
     private val _review = MutableLiveData<Resource<List<Review>>>()
 
     private val _video = MutableLiveData<Resource<List<Video>>>()
 
-    fun fetchMovie(id: Int) {
+    fun fetchTvShow(id: Int) {
         EspressoIdlingResource.increment()
         viewModelScope.launch {
-            _movie.postValue(Resource.loading(null))
+            _tvShow.postValue(Resource.loading(null))
             try {
-                val movie = apiService.getMovie(id, ApiConfig.LANGUAGE)
-                _movie.postValue(Resource.success(movie))
+                val tvShow = apiService.getTvShow(id, ApiConfig.LANGUAGE)
+                _tvShow.postValue(Resource.success(tvShow))
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
-                _movie.postValue(Resource.error(null, message = e.message ?: "Error Occurred!"))
+                _tvShow.postValue(Resource.error(null, message = e.message ?: "Error Occurred!"))
                 EspressoIdlingResource.decrement()
             }
         }
     }
 
-    fun fetchReview(id: Int) {
+    fun fetchTvReview(id: Int) {
         EspressoIdlingResource.increment()
         viewModelScope.launch {
             _review.postValue(Resource.loading(null))
             try {
-                val review = apiService.getMovieReview(id, ApiConfig.LANGUAGE, 1)
+                val review = apiService.getTvReview(id, ApiConfig.LANGUAGE, 1)
                 _review.postValue(Resource.success(review.results) as Resource<List<Review>>?)
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
@@ -56,7 +56,7 @@ class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
         viewModelScope.launch {
             _video.postValue(Resource.loading(null))
             try {
-                val video = apiService.getMovieVideo(id, ApiConfig.LANGUAGE)
+                val video = apiService.getTvVideo(id, ApiConfig.LANGUAGE)
                 _video.postValue(Resource.success(video.results) as Resource<List<Video>>?)
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
@@ -66,8 +66,8 @@ class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
         }
     }
 
-    fun getMovie(): LiveData<Resource<Movie>> {
-        return _movie
+    fun getTvShow(): LiveData<Resource<TvShow>> {
+        return _tvShow
     }
 
     fun getReview(): LiveData<Resource<List<Review>>> {

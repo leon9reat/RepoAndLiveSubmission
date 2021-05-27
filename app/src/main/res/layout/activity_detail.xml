@@ -8,7 +8,7 @@
     tools:context=".ui.detail.DetailActivity">
 
     <FrameLayout
-        android:id="@+id/movie_details_container"
+        android:id="@+id/details_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -1,23 +1,23 @@
-package com.medialink.repoandlivesubmission.ui.detail.movie
+package com.medialink.repoandlivesubmission.ui.detail.tvshow
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Review
+import com.medialink.repoandlivesubmission.data.source.remote.entity.Review
 import com.medialink.repoandlivesubmission.databinding.ReviewBinding
 
-//Class MyAdapter
-class MyAdapter(private val context: Context,
-                private val listReview: ArrayList<Review>) : BaseAdapter() {
-
+class TvShowReviewAdapter(private val context: Context,
+                          private val listReview: ArrayList<Review>) : BaseAdapter()  {
     override fun getCount(): Int {
         return listReview.size
     }
+
     override fun getItem(position: Int): Any {
         return position
     }
+
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
@@ -28,6 +28,4 @@ class MyAdapter(private val context: Context,
         binding.reviewContent.text = listReview[position].content
         return binding.root
     }
-
 }
-//Class MyData class MyData(var num: Int, var name: String, var mobileNumber: String)

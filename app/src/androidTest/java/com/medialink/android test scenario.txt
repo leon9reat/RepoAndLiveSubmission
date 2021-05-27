@@ -1,0 +1,80 @@
+MainActivityTest
+    1. test_LoadDataMovies
+        - load list data movie dari remote
+        - memastikan recycler view tampil
+        - memastikan jumlah data yang diload sesuai
+
+    2. test_LoadDataTvShow
+        - klik tab tv show
+        - memastikan tab tv show aktif
+        - load list data dari remote
+        - memastikan recycler view tampil
+        - memastikan jumlah data yang diload sesuai
+
+    3. test_ButtonTvShowFavoriteClick
+        - klik tab tv show
+        - memastikan tab tv show aktif
+        - klik tombol favorite pada list pertama
+        - memastikan snackbar dengan text "Favorite" tampil
+
+    4. test_ButtonMovieFavoriteClick
+        - klik tombol favorite pada list pertama
+        - memastikan snackbar dengan text "Favorite" tampil
+
+    5. test_ButtonMovieShareClick
+        - klik tombol share pada list pertama
+        - memastikan snackbar dengan text "Share" tampil
+
+    6. test_ButtonTvShowShareClick
+        - klik tab tv show
+        - memastikan tab tv show aktif
+        - klik tombol share pada list pertama
+        - memastikan snackbar dengan text "Share" tampil
+
+    7. test_changeOrientation
+        - jeda 1 detik
+        - ubah orientasi menjadi horizontal
+        - jeda 1 detaik
+        - ubah orientasi menjadi vertical
+
+    8. test_clickShowDetail
+        - klik data pertama dari list yang tampil
+        - memastikan activity yg dipanggil adalah DetailActivity
+
+MovieDetailFragmentTest
+    1. test_showFragment
+        - memastikan title ditampilkan
+        - memastikan nilai title sesuai
+        - memastikan release date ditampilkan
+        - memastikan release date title sesuai
+        - memastikan overview ditampilkan
+        - memastikan overview title sesuai
+
+    2. test_changeOrientation
+        - jeda 1 detik
+        - ubah orientasi menjadi horizontal
+        - pastikan title ditampilkan
+        - memastikan nilai title sesuai
+        - jeda 1 detik
+        - ubah orientasi menjadi vertikal
+        - pastikan title ditampilkan
+        - memastikan nilai title sesuai
+
+TvShowDetailFragmentTest
+    1. test_showFragment
+        - memastikan name ditampilkan
+        - memastikan nilai name sesuai
+        - memastikan first airing date ditampilkan
+        - memastikan first airing date title sesuai
+        - memastikan overview ditampilkan
+        - memastikan overview title sesuai
+
+    2. test_changeOrientation
+        - jeda 1 detik
+        - ubah orientasi menjadi horizontal
+        - pastikan name ditampilkan
+        - memastikan nilai name sesuai
+        - jeda 1 detik
+        - ubah orientasi menjadi vertikal
+        - pastikan name ditampilkan
+        - memastikan nilai name sesuai

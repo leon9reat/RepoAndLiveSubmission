@@ -1,15 +1,20 @@
-package com.medialink.repoandlivesubmission.ui.detail.movie
+package com.medialink.repoandlivesubmission.ui.detail.tvshow
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.entity.*
-import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.*
+import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Movie
+import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
+import com.medialink.repoandlivesubmission.ui.detail.movie.MovieDetailViewModel
 import com.medialink.repoandlivesubmission.utils.Resource
 import com.medialink.repoandlivesubmission.utils.TestCoroutineRule
+import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
+
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -20,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class MovieDetailViewModelTest {
+class TvShowDetailViewModelTest {
 
     @get:Rule
     val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
@@ -29,10 +34,10 @@ class MovieDetailViewModelTest {
     val testCoroutineRule = TestCoroutineRule()
 
     @Mock
-    private lateinit var apiService: ApiService
+    private lateinit var mockApiService: ApiService
 
     @Mock
-    private lateinit var mockMovie: Observer<Resource<Movie>>
+    private lateinit var mockTvShow: Observer<Resource<TvShow>>
 
     @Mock
     private lateinit var mockReview: Observer<Resource<List<Review>>>
@@ -40,30 +45,36 @@ class MovieDetailViewModelTest {
     @Mock
     private lateinit var mockVideo: Observer<Resource<List<Video>>>
 
-    private val movie = Movie(
-        false,
-        "/fPGeS6jgdLovQAKunNHX8l0avCy.jpg",
+    private val tvShow = TvShow(
+        "/9Jmd1OumCjaXDkpllbSGi2EpJvl.jpg",
         null,
-        0,
         null,
-        "https://animemafia.in",
-        567189,
-        "tt0499097",
+        "2014-10-07",
+        null,
+        "http://www.cwtv.com/shows/the-flash/",
+        60735,
+        true,
+        null,
+        "2021-05-25",
+        null,
+        "The Flash",
+        null,
+        null,
+        146,
+        7,
+        null,
         "en",
-        "Tom Clancy's Without Remorse",
-        "An elite Navy SEAL uncovers an international conspiracy while seeking justice for the murder of his pregnant wife.",
-        2235.578,
-        "/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+        "The Flash",
+        "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \"meta-human\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
+        1236.368,
+        "/lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg",
         null,
         null,
-        "2021-04-29",
-        0,
-        109,
         null,
-        "Released",
-        "From Tom Clancy, the author of Rainbow Six.",
-        "Tom Clancy's Without Remorse",
-        false,
+        null,
+        "Returning Series",
+        "The fastest man alive.",
+        "Scripted",
         7.3,
         991
     )
@@ -86,7 +97,7 @@ class MovieDetailViewModelTest {
     )
 
     private val reviewRespon = ReviewRespon(
-        567189,
+        60735,
         1,
         review,
         1,
@@ -94,7 +105,7 @@ class MovieDetailViewModelTest {
     )
 
     private val videoRespon = VideoRespon(
-        567189,
+        60735,
         listOf(
             Video(
                 "533ec654c3a36854480003eb",
@@ -114,40 +125,40 @@ class MovieDetailViewModelTest {
     }
 
     @Test
-    fun test_loadMovie() {
+    fun test_loadTvShow() {
         testCoroutineRule.runBlockingTest {
-            Mockito.doReturn(movie)
-                .`when`(apiService)
-                .getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.doReturn(tvShow)
+                .`when`(mockApiService)
+                .getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
 
-            val viewModel = MovieDetailViewModel(apiService)
-            viewModel.fetchMovie(movie.id ?: 0)
-            viewModel.getMovie().observeForever(mockMovie)
-            Mockito.verify(apiService).getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
-            Mockito.verify(mockMovie).onChanged(Resource.success(movie))
-            viewModel.getMovie().removeObserver(mockMovie)
+            val viewModel = TvShowDetailViewModel(mockApiService)
+            viewModel.fetchTvShow(tvShow.id ?: 0)
+            viewModel.getTvShow().observeForever(mockTvShow)
+            Mockito.verify(mockApiService).getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockTvShow).onChanged(Resource.success(tvShow))
+            viewModel.getTvShow().removeObserver(mockTvShow)
         }
     }
 
     @Test
-    fun test_loadMovieError() {
+    fun test_loadTvShowError() {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(apiService)
-                .getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
-            val viewModel = MovieDetailViewModel(apiService)
+                .`when`(mockApiService)
+                .getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            val viewModel = TvShowDetailViewModel(mockApiService)
 
-            viewModel.fetchMovie(movie.id ?: 0)
-            viewModel.getMovie().observeForever(mockMovie)
-            Mockito.verify(apiService).getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
-            Mockito.verify(mockMovie).onChanged(
+            viewModel.fetchTvShow(tvShow.id ?: 0)
+            viewModel.getTvShow().observeForever(mockTvShow)
+            Mockito.verify(mockApiService).getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockTvShow).onChanged(
                 Resource.error(
                     null,
                     errorMessage,
                 )
             )
-            viewModel.getMovie().removeObserver(mockMovie)
+            viewModel.getTvShow().removeObserver(mockTvShow)
         }
     }
 
@@ -155,13 +166,13 @@ class MovieDetailViewModelTest {
     fun test_loadReview() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(reviewRespon)
-                .`when`(apiService)
-                .getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
+                .`when`(mockApiService)
+                .getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
 
-            val viewModel = MovieDetailViewModel(apiService)
-            viewModel.fetchReview(movie.id ?: 0)
+            val viewModel = TvShowDetailViewModel(mockApiService)
+            viewModel.fetchTvReview(tvShow.id ?: 0)
             viewModel.getReview().observeForever(mockReview)
-            Mockito.verify(apiService).getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
+            Mockito.verify(mockApiService).getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
             Mockito.verify(mockReview)
                 .onChanged(Resource.success(reviewRespon.results) as Resource<List<Review>>?)
             viewModel.getReview().removeObserver(mockReview)
@@ -173,13 +184,13 @@ class MovieDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(apiService)
-                .getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
-            val viewModel = MovieDetailViewModel(apiService)
+                .`when`(mockApiService)
+                .getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
+            val viewModel = TvShowDetailViewModel(mockApiService)
 
-            viewModel.fetchReview(movie.id ?: 0)
+            viewModel.fetchTvReview(tvShow.id ?: 0)
             viewModel.getReview().observeForever(mockReview)
-            Mockito.verify(apiService).getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
+            Mockito.verify(mockApiService).getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
             Mockito.verify(mockReview).onChanged(
                 Resource.error(
                     null,
@@ -194,13 +205,13 @@ class MovieDetailViewModelTest {
     fun test_loadVideo() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(videoRespon)
-                .`when`(apiService)
-                .getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
+                .`when`(mockApiService)
+                .getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
 
-            val viewModel = MovieDetailViewModel(apiService)
-            viewModel.fetchVideo(movie.id ?: 0)
+            val viewModel = TvShowDetailViewModel(mockApiService)
+            viewModel.fetchVideo(tvShow.id ?: 0)
             viewModel.getVideo().observeForever(mockVideo)
-            Mockito.verify(apiService).getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockApiService).getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockVideo)
                 .onChanged(Resource.success(videoRespon.results) as Resource<List<Video>>?)
             viewModel.getVideo().removeObserver(mockVideo)
@@ -212,13 +223,13 @@ class MovieDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(apiService)
-                .getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
-            val viewModel = MovieDetailViewModel(apiService)
+                .`when`(mockApiService)
+                .getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            val viewModel = TvShowDetailViewModel(mockApiService)
 
-            viewModel.fetchVideo(movie.id ?: 0)
+            viewModel.fetchVideo(tvShow.id ?: 0)
             viewModel.getVideo().observeForever(mockVideo)
-            Mockito.verify(apiService).getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockApiService).getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockVideo).onChanged(
                 Resource.error(
                     null,

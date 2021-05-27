@@ -1,27 +1,32 @@
 package com.medialink.repoandlivesubmission.ui.main
 
-import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.os.SystemClock
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.PerformException
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.ComponentNameMatchers
+import androidx.test.espresso.intent.matcher.IntentMatchers
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
-import androidx.test.runner.lifecycle.Stage
 import com.google.android.material.tabs.TabLayout
+import com.medialink.repoandlivesubmission.OrientationChangeAction.Companion.orientationLandscape
+import com.medialink.repoandlivesubmission.OrientationChangeAction.Companion.orientationPortrait
 import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
-import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.OrientationChangeAction.Companion.orientationLandscape
-import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.OrientationChangeAction.Companion.orientationPortrait
+import com.medialink.repoandlivesubmission.ui.detail.DetailActivity
+import com.medialink.repoandlivesubmission.ui.fragment.BaseFragment
 import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.RecyclerViewMatchers.hasItemCount
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking
@@ -31,10 +36,14 @@ import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 
 class MainActivityTest {
+
+    @get:Rule
+    var intentsRule: IntentsTestRule<MainActivity> = IntentsTestRule(MainActivity::class.java)
 
 
     @Before
@@ -191,6 +200,28 @@ class MainActivityTest {
         onView(isRoot()).perform(orientationPortrait())
     }
 
+
+    @Test
+    fun test_clickShowDetail() {
+
+        val matcher = Matchers.allOf(
+            withId(R.id.movies_rv),
+            isDisplayed(),
+        )
+        onView(matcher).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                ViewActions.click()
+            )
+        )
+        Intents.intended(
+            Matchers.allOf(
+                IntentMatchers.hasComponent(ComponentNameMatchers.hasShortClassName(".ui.detail.DetailActivity")),
+            )
+        )
+
+    }
+
     private fun matchCurrentTabTitle(tabTitle: String): Matcher<View> {
         return object : TypeSafeMatcher<View>() {
             override fun describeTo(description: Description?) {
@@ -255,37 +286,6 @@ class MainActivityTest {
         }
     }
 
-    /**
-     * An Espresso ViewAction that changes the orientation of the screen
-     */
-    class OrientationChangeAction private constructor(private val orientation: Int) : ViewAction {
-        override fun getConstraints(): Matcher<View> {
-            return isRoot()
-        }
 
-        override fun getDescription(): String {
-            return "change orientation to $orientation"
-        }
 
-        override fun perform(uiController: UiController, view: View) {
-            uiController.loopMainThreadUntilIdle()
-            val activity = view.context as Activity
-            activity.requestedOrientation = orientation
-            val resumedActivities =
-                ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
-            if (resumedActivities.isEmpty()) {
-                throw RuntimeException("Could not change orientation")
-            }
-        }
-
-        companion object {
-            fun orientationLandscape(): ViewAction {
-                return OrientationChangeAction(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            }
-
-            fun orientationPortrait(): ViewAction {
-                return OrientationChangeAction(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            }
-        }
-    }
 }

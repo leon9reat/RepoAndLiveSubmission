@@ -1,0 +1,124 @@
+MovieRepositoryTest
+    1. testResponApi
+        - load data dari mock web server
+        - memastikan nilai page benar
+        - memastikan totalResults benar
+        - memastikan totalPages benar
+        - memastikan id benar
+
+    2. testGetMovieListFromNetwork
+        - load data dari real remote
+        - memastikan nilai list movie tidak null
+        - memastikan jumlah data yang diload 20
+
+    3. testGetMovieDetailFromNetwork
+        - load data list movie dari remote
+        - ambil nilai id pertama
+        - load detail movie dari remote sesuai id yg diambil sebelumnya
+        - pastikan nilai detail movie tidak null
+        - memastikan nilai id dari detail sesuai dengan nilai id pertama dari list
+
+TvShowRepositoryTest
+    1. testResponApi
+        - load data dari mock web server
+        - memastikan nilai page benar
+        - memastikan totalResults benar
+        - memastikan totalPages benar
+        - memastikan id benar
+
+    2. testGetTvListFromNetwork
+        - load data dari real remote
+        - memastikan nilai list tv tidak null
+        - memastikan jumlah data yang diload 20
+
+    3. testGetTvDetailFromNetwork
+        - load data list tv dari remote
+        - ambil nilai id pertama
+        - load detail tv dari remote sesuai id yg diambil sebelumnya
+        - pastikan nilai detail tv tidak null
+        - memastikan nilai id dari detail sesuai dengan nilai id pertama dari list
+
+FragmentViewModelTest
+    1. testResponOK
+        - observe list movie
+        - verifikasi yang diload list movie page 1
+        - memastikan perubahan data sesuai dengan hasil load list
+
+    2. testResponError
+        - observe list movie
+        - verifikasi yang diload list movie page 0
+        - memastikan perubahan data sesuai dengan hasil jika list load error
+
+MovieDetailViewModelTest
+    1. test_loadMovie
+        - load data detail movie
+        - observe detail movie
+        - verifikasi load movie dijalankan
+        - verifikasi perubahan data sesuai dengan hasil load detail movie
+
+    2. test_loadMovieError
+        - load data detail movie menggunakan id yg salah
+        - observe detail movie
+        - verfikasi load movie dijalankan
+        - memastikan perubahan data sesuai, dengan hasil jika load data error
+
+    3. test_loadReview
+        - load data review movie
+        - observe review movie
+        - verifikasi load review movie dijalankan
+        - verifikasi perubahan data sesuai dengan hasil load review movie
+
+    4. test_loadReviewError
+        - load data review movie menggunakan id yg salah
+        - observe review movie
+        - verfikasi review movie dijalankan
+        - memastikan perubahan data sesuai, dengan hasil jika load data error
+
+    5. test_loadVideo
+        - load data video movie
+        - observe video movie
+        - verifikasi load data video movie dijalankan
+        - verifikasi perubahan data sesuai dengan hasil load video movie
+
+    6. test_loadVideoError
+        - load data video movie menggunakan id yg salah
+        - observe video movie
+        - verfikasi video movie dijalankan
+        - memastikan perubahan data sesuai, dengan hasil jika load data error
+
+TvShowDetailViewModelTest
+    1. test_loadTvShow
+        - load data detail tv
+        - observe detail tv
+        - verifikasi load tv dijalankan
+        - verifikasi perubahan data sesuai dengan hasil load detail tv
+
+    2. test_loadTvShowError
+        - load data detail tv menggunakan id yg salah
+        - observe detail tv
+        - verfikasi load tv dijalankan
+        - memastikan perubahan data sesuai, dengan hasil jika load data error
+
+    3. test_loadReview
+        - load data review tv
+        - observe review tv
+        - verifikasi load review tv dijalankan
+        - verifikasi perubahan data sesuai dengan hasil load review tv
+
+    4. test_loadReviewError
+        - load data review tv menggunakan id yg salah
+        - observe tv movie
+        - verfikasi review tv dijalankan
+        - memastikan perubahan data sesuai, dengan hasil jika load data error
+
+    5. test_loadVideo
+        - load data video tv
+        - observe video tv
+        - verifikasi load data video tv dijalankan
+        - verifikasi perubahan data sesuai dengan hasil load video tv
+
+    6. test_loadVideoError
+        - load data video tv menggunakan id yg salah
+        - observe video tv
+        - verfikasi video tv dijalankan
+        - memastikan perubahan data sesuai, dengan hasil jika load data error

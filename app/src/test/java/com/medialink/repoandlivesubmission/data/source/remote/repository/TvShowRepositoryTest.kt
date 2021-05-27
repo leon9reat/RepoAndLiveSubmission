@@ -8,9 +8,9 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -66,7 +66,7 @@ class TvShowRepositoryTest {
     private val tvRepo = TvShowRepository(myApiService)
 
     @Test
-    fun testGetMovieListFromNetwork() {
+    fun testGetTvListFromNetwork() {
         runBlocking {
             val x = tvRepo.getList(1)
             assertNotNull(x)
@@ -75,7 +75,7 @@ class TvShowRepositoryTest {
     }
 
     @Test
-    fun testGetMovieDetailFromNetwork() {
+    fun testGetTvDetailFromNetwork() {
         runBlocking {
             val x = tvRepo.getList(1)
             assertNotNull(x)

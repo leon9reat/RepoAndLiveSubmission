@@ -1,10 +1,8 @@
 package com.medialink.repoandlivesubmission.data.source.remote.repository
 
-import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
 import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
-import com.medialink.repoandlivesubmission.utils.AppConfig
 import com.medialink.repoandlivesubmission.utils.FakeWeb
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

@@ -7,6 +7,7 @@ import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
 import com.medialink.repoandlivesubmission.databinding.ActivityDetailBinding
 import com.medialink.repoandlivesubmission.ui.detail.movie.MovieDetailFragment
+import com.medialink.repoandlivesubmission.ui.detail.tvshow.TvShowDetailFragment
 import com.medialink.repoandlivesubmission.utils.AppConfig
 
 
@@ -31,7 +32,13 @@ class DetailActivity : AppCompatActivity() {
             if (item.idType == AppConfig.TYPE_MOVIE) {
                 val movieDetailsFragment = MovieDetailFragment.newInstance(item)
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.movie_details_container, movieDetailsFragment)
+                    .replace(R.id.details_container, movieDetailsFragment)
+                    .commit()
+            } else if (item.idType == AppConfig.TYPE_TV_SHOW) {
+                val tvDetailFragment = TvShowDetailFragment.newInstance(item)
+                Log.d("TAG", "onCreate: ${item.id}")
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.details_container, tvDetailFragment)
                     .commit()
             }
         }
