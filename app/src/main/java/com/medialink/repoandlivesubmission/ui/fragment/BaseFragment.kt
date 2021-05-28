@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
-import com.medialink.repoandlivesubmission.data.source.remote.repository.IRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
@@ -40,7 +39,7 @@ class BaseFragment : Fragment(), IBaseFragment {
     private lateinit var mViewModel: FragmentViewModel
     private var mIdJenis: Int = 0
 
-    val mAdapter = BaseAdapter(this)
+    private val mAdapter = BaseAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +88,7 @@ class BaseFragment : Fragment(), IBaseFragment {
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
                     it.data?.let { listData ->
-                        if (listData.size > 0) {
+                        if (listData.isNotEmpty()) {
                             binding.moviesRv.visibility = View.VISIBLE
                             binding.layoutEmpty.root.visibility = View.GONE
                             binding.layoutError.root.visibility = View.GONE

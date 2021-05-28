@@ -25,8 +25,6 @@ import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
-import com.medialink.repoandlivesubmission.ui.detail.DetailActivity
-import com.medialink.repoandlivesubmission.ui.fragment.BaseFragment
 import com.medialink.repoandlivesubmission.ui.main.MainActivityTest.RecyclerViewMatchers.hasItemCount
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking

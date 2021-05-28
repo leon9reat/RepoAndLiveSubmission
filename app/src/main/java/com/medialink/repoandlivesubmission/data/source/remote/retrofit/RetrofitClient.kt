@@ -1,7 +1,6 @@
 package com.medialink.repoandlivesubmission.data.source.remote.retrofit
 
 import com.medialink.repoandlivesubmission.BuildConfig
-import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -8,12 +8,13 @@ import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Review
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Video
 import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
+import com.medialink.repoandlivesubmission.data.source.remote.repository.ITvRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import com.medialink.repoandlivesubmission.utils.Resource
 import kotlinx.coroutines.launch
 
-class TvShowDetailViewModel(private val apiService: ApiService): ViewModel() {
+class TvShowDetailViewModel(private val tvRepository: ITvRepository): ViewModel() {
 
     private val _tvShow = MutableLiveData<Resource<TvShow>>()
 
@@ -26,7 +27,7 @@ class TvShowDetailViewModel(private val apiService: ApiService): ViewModel() {
         viewModelScope.launch {
             _tvShow.postValue(Resource.loading(null))
             try {
-                val tvShow = apiService.getTvShow(id, ApiConfig.LANGUAGE)
+                val tvShow = tvRepository.getTvShow(id, ApiConfig.LANGUAGE)
                 _tvShow.postValue(Resource.success(tvShow))
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
@@ -41,7 +42,7 @@ class TvShowDetailViewModel(private val apiService: ApiService): ViewModel() {
         viewModelScope.launch {
             _review.postValue(Resource.loading(null))
             try {
-                val review = apiService.getTvReview(id, ApiConfig.LANGUAGE, 1)
+                val review = tvRepository.getTvReview(id, ApiConfig.LANGUAGE, 1)
                 _review.postValue(Resource.success(review.results) as Resource<List<Review>>?)
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
@@ -56,7 +57,7 @@ class TvShowDetailViewModel(private val apiService: ApiService): ViewModel() {
         viewModelScope.launch {
             _video.postValue(Resource.loading(null))
             try {
-                val video = apiService.getTvVideo(id, ApiConfig.LANGUAGE)
+                val video = tvRepository.getTvVideo(id, ApiConfig.LANGUAGE)
                 _video.postValue(Resource.success(video.results) as Resource<List<Video>>?)
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {

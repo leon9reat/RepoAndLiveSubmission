@@ -34,7 +34,7 @@ class MovieDetailFragment : Fragment() {
     private var mMovie: Detail? = null
 
     companion object {
-        const val PARAMETER: String = "PARAMETER"
+        private const val PARAMETER: String = "PARAMETER"
 
         @JvmStatic
         fun newInstance(movie: Detail) =

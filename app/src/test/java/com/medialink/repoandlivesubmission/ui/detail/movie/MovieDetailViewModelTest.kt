@@ -5,7 +5,9 @@ import androidx.lifecycle.Observer
 import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.entity.*
 import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.*
+import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
+import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
 import com.medialink.repoandlivesubmission.utils.Resource
 import com.medialink.repoandlivesubmission.utils.TestCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +31,10 @@ class MovieDetailViewModelTest {
     val testCoroutineRule = TestCoroutineRule()
 
     @Mock
-    private lateinit var apiService: ApiService
+    private var apiService: ApiService = RetrofitClient.getApiService()
+
+    @Mock
+    private val mockMovieRepository: MovieRepository = MovieRepository(apiService)
 
     @Mock
     private lateinit var mockMovie: Observer<Resource<Movie>>
@@ -117,13 +122,13 @@ class MovieDetailViewModelTest {
     fun test_loadMovie() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(movie)
-                .`when`(apiService)
+                .`when`(mockMovieRepository)
                 .getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
 
-            val viewModel = MovieDetailViewModel(apiService)
+            val viewModel = MovieDetailViewModel(mockMovieRepository)
             viewModel.fetchMovie(movie.id ?: 0)
             viewModel.getMovie().observeForever(mockMovie)
-            Mockito.verify(apiService).getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockMovieRepository).getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockMovie).onChanged(Resource.success(movie))
             viewModel.getMovie().removeObserver(mockMovie)
         }
@@ -134,13 +139,13 @@ class MovieDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(apiService)
+                .`when`(mockMovieRepository)
                 .getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
-            val viewModel = MovieDetailViewModel(apiService)
+            val viewModel = MovieDetailViewModel(mockMovieRepository)
 
             viewModel.fetchMovie(movie.id ?: 0)
             viewModel.getMovie().observeForever(mockMovie)
-            Mockito.verify(apiService).getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockMovieRepository).getMovie(movie.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockMovie).onChanged(
                 Resource.error(
                     null,
@@ -155,13 +160,13 @@ class MovieDetailViewModelTest {
     fun test_loadReview() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(reviewRespon)
-                .`when`(apiService)
+                .`when`(mockMovieRepository)
                 .getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
 
-            val viewModel = MovieDetailViewModel(apiService)
+            val viewModel = MovieDetailViewModel(mockMovieRepository)
             viewModel.fetchReview(movie.id ?: 0)
             viewModel.getReview().observeForever(mockReview)
-            Mockito.verify(apiService).getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
+            Mockito.verify(mockMovieRepository).getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
             Mockito.verify(mockReview)
                 .onChanged(Resource.success(reviewRespon.results) as Resource<List<Review>>?)
             viewModel.getReview().removeObserver(mockReview)
@@ -173,13 +178,13 @@ class MovieDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(apiService)
+                .`when`(mockMovieRepository)
                 .getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
-            val viewModel = MovieDetailViewModel(apiService)
+            val viewModel = MovieDetailViewModel(mockMovieRepository)
 
             viewModel.fetchReview(movie.id ?: 0)
             viewModel.getReview().observeForever(mockReview)
-            Mockito.verify(apiService).getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
+            Mockito.verify(mockMovieRepository).getMovieReview(movie.id ?: 0, ApiConfig.LANGUAGE, 1)
             Mockito.verify(mockReview).onChanged(
                 Resource.error(
                     null,
@@ -194,13 +199,13 @@ class MovieDetailViewModelTest {
     fun test_loadVideo() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(videoRespon)
-                .`when`(apiService)
+                .`when`(mockMovieRepository)
                 .getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
 
-            val viewModel = MovieDetailViewModel(apiService)
+            val viewModel = MovieDetailViewModel(mockMovieRepository)
             viewModel.fetchVideo(movie.id ?: 0)
             viewModel.getVideo().observeForever(mockVideo)
-            Mockito.verify(apiService).getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockMovieRepository).getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockVideo)
                 .onChanged(Resource.success(videoRespon.results) as Resource<List<Video>>?)
             viewModel.getVideo().removeObserver(mockVideo)
@@ -212,13 +217,13 @@ class MovieDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(apiService)
+                .`when`(mockMovieRepository)
                 .getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
-            val viewModel = MovieDetailViewModel(apiService)
+            val viewModel = MovieDetailViewModel(mockMovieRepository)
 
             viewModel.fetchVideo(movie.id ?: 0)
             viewModel.getVideo().observeForever(mockVideo)
-            Mockito.verify(apiService).getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockMovieRepository).getMovieVideo(movie.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockVideo).onChanged(
                 Resource.error(
                     null,

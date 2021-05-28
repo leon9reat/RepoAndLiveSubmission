@@ -3,12 +3,12 @@ package com.medialink.repoandlivesubmission.ui.detail.tvshow
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -18,12 +18,10 @@ import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
 import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Review
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Video
-import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Movie
 import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
 import com.medialink.repoandlivesubmission.databinding.FragmentTvShowDetailBinding
-import com.medialink.repoandlivesubmission.ui.detail.movie.MovieDetailViewModel
 import com.medialink.repoandlivesubmission.ui.detail.movie.MovieReviewAdapter
 import com.medialink.repoandlivesubmission.ui.fragment.BaseFragment
 import com.medialink.repoandlivesubmission.utils.Status
@@ -36,7 +34,7 @@ class TvShowDetailFragment : Fragment() {
     private var mTvShow: Detail? = null
 
     companion object {
-        const val PARAMETER: String = "PARAMETER"
+        private const val PARAMETER: String = "PARAMETER"
 
         @JvmStatic
         fun newInstance(tvShow: Detail) =

@@ -16,8 +16,6 @@ import com.medialink.repoandlivesubmission.utils.AppConfig
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import org.junit.After
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +27,7 @@ class TvShowDetailFragmentTest {
     @JvmField
     var mActivityTestRule = ActivityTestRule(DetailActivity::class.java)
 
-    val tvShow = Detail(
+    private val tvShow = Detail(
         AppConfig.TYPE_TV_SHOW,
         "/9Jmd1OumCjaXDkpllbSGi2EpJvl.jpg",
         null,

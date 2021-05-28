@@ -4,17 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.entity.*
-import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Movie
 import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
+import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
+import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
-import com.medialink.repoandlivesubmission.ui.detail.movie.MovieDetailViewModel
+import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
 import com.medialink.repoandlivesubmission.utils.Resource
 import com.medialink.repoandlivesubmission.utils.TestCoroutineRule
-import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -34,7 +32,13 @@ class TvShowDetailViewModelTest {
     val testCoroutineRule = TestCoroutineRule()
 
     @Mock
-    private lateinit var mockApiService: ApiService
+    private  var mockApiService: ApiService = RetrofitClient.getApiService()
+
+    @Mock
+    private val mockMovieRepository: MovieRepository = MovieRepository(mockApiService)
+
+    @Mock
+    private val mockTvRepository: TvShowRepository = TvShowRepository(mockApiService)
 
     @Mock
     private lateinit var mockTvShow: Observer<Resource<TvShow>>
@@ -128,13 +132,13 @@ class TvShowDetailViewModelTest {
     fun test_loadTvShow() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(tvShow)
-                .`when`(mockApiService)
+                .`when`(mockTvRepository)
                 .getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
 
-            val viewModel = TvShowDetailViewModel(mockApiService)
+            val viewModel = TvShowDetailViewModel(mockTvRepository)
             viewModel.fetchTvShow(tvShow.id ?: 0)
             viewModel.getTvShow().observeForever(mockTvShow)
-            Mockito.verify(mockApiService).getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockTvRepository).getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockTvShow).onChanged(Resource.success(tvShow))
             viewModel.getTvShow().removeObserver(mockTvShow)
         }
@@ -145,13 +149,13 @@ class TvShowDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(mockApiService)
+                .`when`(mockTvRepository)
                 .getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
-            val viewModel = TvShowDetailViewModel(mockApiService)
+            val viewModel = TvShowDetailViewModel(mockTvRepository)
 
             viewModel.fetchTvShow(tvShow.id ?: 0)
             viewModel.getTvShow().observeForever(mockTvShow)
-            Mockito.verify(mockApiService).getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockTvRepository).getTvShow(tvShow.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockTvShow).onChanged(
                 Resource.error(
                     null,
@@ -166,13 +170,13 @@ class TvShowDetailViewModelTest {
     fun test_loadReview() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(reviewRespon)
-                .`when`(mockApiService)
+                .`when`(mockTvRepository)
                 .getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
 
-            val viewModel = TvShowDetailViewModel(mockApiService)
+            val viewModel = TvShowDetailViewModel(mockTvRepository)
             viewModel.fetchTvReview(tvShow.id ?: 0)
             viewModel.getReview().observeForever(mockReview)
-            Mockito.verify(mockApiService).getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
+            Mockito.verify(mockTvRepository).getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
             Mockito.verify(mockReview)
                 .onChanged(Resource.success(reviewRespon.results) as Resource<List<Review>>?)
             viewModel.getReview().removeObserver(mockReview)
@@ -184,13 +188,13 @@ class TvShowDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(mockApiService)
+                .`when`(mockTvRepository)
                 .getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
-            val viewModel = TvShowDetailViewModel(mockApiService)
+            val viewModel = TvShowDetailViewModel(mockTvRepository)
 
             viewModel.fetchTvReview(tvShow.id ?: 0)
             viewModel.getReview().observeForever(mockReview)
-            Mockito.verify(mockApiService).getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
+            Mockito.verify(mockTvRepository).getTvReview(tvShow.id ?: 0, ApiConfig.LANGUAGE, 1)
             Mockito.verify(mockReview).onChanged(
                 Resource.error(
                     null,
@@ -205,13 +209,13 @@ class TvShowDetailViewModelTest {
     fun test_loadVideo() {
         testCoroutineRule.runBlockingTest {
             Mockito.doReturn(videoRespon)
-                .`when`(mockApiService)
+                .`when`(mockTvRepository)
                 .getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
 
-            val viewModel = TvShowDetailViewModel(mockApiService)
+            val viewModel = TvShowDetailViewModel(mockTvRepository)
             viewModel.fetchVideo(tvShow.id ?: 0)
             viewModel.getVideo().observeForever(mockVideo)
-            Mockito.verify(mockApiService).getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockTvRepository).getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockVideo)
                 .onChanged(Resource.success(videoRespon.results) as Resource<List<Video>>?)
             viewModel.getVideo().removeObserver(mockVideo)
@@ -223,13 +227,13 @@ class TvShowDetailViewModelTest {
         testCoroutineRule.runBlockingTest {
             val errorMessage = "Error Message For You"
             Mockito.doThrow(RuntimeException(errorMessage))
-                .`when`(mockApiService)
+                .`when`(mockTvRepository)
                 .getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
-            val viewModel = TvShowDetailViewModel(mockApiService)
+            val viewModel = TvShowDetailViewModel(mockTvRepository)
 
             viewModel.fetchVideo(tvShow.id ?: 0)
             viewModel.getVideo().observeForever(mockVideo)
-            Mockito.verify(mockApiService).getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
+            Mockito.verify(mockTvRepository).getTvVideo(tvShow.id ?: 0, ApiConfig.LANGUAGE)
             Mockito.verify(mockVideo).onChanged(
                 Resource.error(
                     null,

@@ -1,6 +1,5 @@
 package com.medialink.repoandlivesubmission.di
 
-import android.content.Context
 import com.medialink.repoandlivesubmission.data.source.remote.repository.IRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService

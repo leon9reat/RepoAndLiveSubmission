@@ -8,8 +8,6 @@ import com.medialink.repoandlivesubmission.utils.Resource
 import com.medialink.repoandlivesubmission.utils.TestCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule

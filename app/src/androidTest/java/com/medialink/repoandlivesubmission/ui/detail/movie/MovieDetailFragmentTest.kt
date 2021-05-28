@@ -28,7 +28,7 @@ class MovieDetailFragmentTest {
     @JvmField
     var mActivityTestRule = ActivityTestRule(DetailActivity::class.java)
 
-    val movie = Detail(
+    private val movie = Detail(
         AppConfig.TYPE_MOVIE,
         "/fPGeS6jgdLovQAKunNHX8l0avCy.jpg",
         null,

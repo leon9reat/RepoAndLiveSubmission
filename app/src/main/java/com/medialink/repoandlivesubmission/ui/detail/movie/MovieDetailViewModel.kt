@@ -8,12 +8,12 @@ import com.medialink.repoandlivesubmission.data.source.remote.ApiConfig
 import com.medialink.repoandlivesubmission.data.source.remote.entity.movie.Movie
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Review
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Video
-import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
+import com.medialink.repoandlivesubmission.data.source.remote.repository.IMovieRepository
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import com.medialink.repoandlivesubmission.utils.Resource
 import kotlinx.coroutines.launch
 
-class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
+class MovieDetailViewModel(private val movieRepository: IMovieRepository) : ViewModel() {
 
     private val _movie = MutableLiveData<Resource<Movie>>()
 
@@ -26,7 +26,7 @@ class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
         viewModelScope.launch {
             _movie.postValue(Resource.loading(null))
             try {
-                val movie = apiService.getMovie(id, ApiConfig.LANGUAGE)
+                val movie = movieRepository.getMovie(id, ApiConfig.LANGUAGE)
                 _movie.postValue(Resource.success(movie))
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
@@ -41,7 +41,7 @@ class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
         viewModelScope.launch {
             _review.postValue(Resource.loading(null))
             try {
-                val review = apiService.getMovieReview(id, ApiConfig.LANGUAGE, 1)
+                val review = movieRepository.getMovieReview(id, ApiConfig.LANGUAGE, 1)
                 _review.postValue(Resource.success(review.results) as Resource<List<Review>>?)
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {
@@ -56,7 +56,7 @@ class MovieDetailViewModel(private val apiService: ApiService) : ViewModel() {
         viewModelScope.launch {
             _video.postValue(Resource.loading(null))
             try {
-                val video = apiService.getMovieVideo(id, ApiConfig.LANGUAGE)
+                val video = movieRepository.getMovieVideo(id, ApiConfig.LANGUAGE)
                 _video.postValue(Resource.success(video.results) as Resource<List<Video>>?)
                 EspressoIdlingResource.decrement()
             } catch (e: java.lang.Exception) {

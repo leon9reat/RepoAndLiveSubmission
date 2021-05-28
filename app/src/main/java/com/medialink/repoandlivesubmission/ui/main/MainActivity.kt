@@ -1,14 +1,10 @@
 package com.medialink.repoandlivesubmission.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.medialink.repoandlivesubmission.R
-import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
-import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
-import com.medialink.repoandlivesubmission.data.source.remote.retrofit.RetrofitClient
 import com.medialink.repoandlivesubmission.databinding.ActivityMainBinding
 import com.medialink.repoandlivesubmission.ui.fragment.BaseFragment
 import com.medialink.repoandlivesubmission.utils.AppConfig
