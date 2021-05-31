@@ -1,6 +1,7 @@
 package com.medialink.repoandlivesubmission.ui.main
 
-import android.os.SystemClock
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
@@ -19,8 +20,6 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.android.material.tabs.TabLayout
-import com.medialink.repoandlivesubmission.OrientationChangeAction.Companion.orientationLandscape
-import com.medialink.repoandlivesubmission.OrientationChangeAction.Companion.orientationPortrait
 import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.remote.repository.MovieRepository
 import com.medialink.repoandlivesubmission.data.source.remote.repository.TvShowRepository
@@ -43,11 +42,15 @@ class MainActivityTest {
     @get:Rule
     var intentsRule: IntentsTestRule<MainActivity> = IntentsTestRule(MainActivity::class.java)
 
+    private lateinit var myActivity: Activity
 
     @Before
     fun setUp() {
-        ActivityScenario.launch(MainActivity::class.java)
+        val scenario = ActivityScenario.launch(MainActivity::class.java)
         IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
+        scenario.onActivity {
+            myActivity = it
+        }
     }
 
     @After
@@ -192,10 +195,16 @@ class MainActivityTest {
 
     @Test
     fun test_changeOrientation() {
-        SystemClock.sleep(1000)
-        onView(isRoot()).perform(orientationLandscape())
-        SystemClock.sleep(1000)
-        onView(isRoot()).perform(orientationPortrait())
+        val matcher = Matchers.allOf(
+            withId(R.id.movies_rv),
+            isDisplayed()
+        )
+
+        myActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        onView(matcher).check(matches(isDisplayed()))
+
+        myActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        onView(matcher).check(matches(isDisplayed()))
     }
 
 

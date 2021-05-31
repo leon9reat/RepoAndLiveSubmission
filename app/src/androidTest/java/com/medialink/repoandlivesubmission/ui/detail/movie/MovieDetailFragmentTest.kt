@@ -1,14 +1,14 @@
 package com.medialink.repoandlivesubmission.ui.detail.movie
 
+import android.app.Activity
 import android.content.Intent
-import android.os.SystemClock
+import android.content.pm.ActivityInfo
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.medialink.repoandlivesubmission.OrientationChangeAction
 import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
 import com.medialink.repoandlivesubmission.ui.detail.DetailActivity
@@ -46,11 +46,14 @@ class MovieDetailFragmentTest {
         991
     )
 
+    private lateinit var myActivity: Activity
+
     @Before
     fun setUp() {
         val intent = Intent()
         intent.putExtra(DetailActivity.PARCEL_DETAIL, movie)
         mActivityTestRule.launchActivity(intent)
+        myActivity = mActivityTestRule.activity
         IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
     }
 
@@ -64,26 +67,31 @@ class MovieDetailFragmentTest {
         onView(withId(R.id.tv_title)).check(ViewAssertions.matches(isDisplayed()))
         onView(withId(R.id.tv_title)).check(ViewAssertions.matches(withText(movie.title)))
 
-        val release =
-            mActivityTestRule.activity.getString(R.string.label_release) + " " + movie.date
+        val release = mActivityTestRule.activity.getString(R.string.label_release) + " " + movie.date
         onView(withId(R.id.tv_release)).check(ViewAssertions.matches(isDisplayed()))
         onView(withId(R.id.tv_release)).check(ViewAssertions.matches(withText(release)))
 
         onView(withId(R.id.tv_overview)).check(ViewAssertions.matches(isDisplayed()))
         onView(withId(R.id.tv_overview)).check(ViewAssertions.matches(withText(movie.overview)))
+
+        onView(withId(R.id.iv_poster)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.tv_rating)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.trailer_and_reviews)).check(ViewAssertions.matches(isDisplayed()))
     }
 
     @Test
     fun test_changeOrientation() {
-        SystemClock.sleep(1000)
-        onView(isRoot()).perform(OrientationChangeAction.orientationLandscape())
+        myActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         onView(withId(R.id.tv_title)).check(ViewAssertions.matches(isDisplayed()))
         onView(withId(R.id.tv_title)).check(ViewAssertions.matches(withText(movie.title)))
 
-        SystemClock.sleep(1000)
-        onView(isRoot()).perform(OrientationChangeAction.orientationPortrait())
+        myActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         onView(withId(R.id.tv_title)).check(ViewAssertions.matches(isDisplayed()))
         onView(withId(R.id.tv_title)).check(ViewAssertions.matches(withText(movie.title)))
+
+        /*onView(isRoot()).perform(OrientationChangeAction.orientationPortrait())
+        onView(withId(R.id.tv_title)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.tv_title)).check(ViewAssertions.matches(withText(movie.title)))*/
     }
 
 }

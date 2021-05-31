@@ -9,7 +9,6 @@ import com.medialink.repoandlivesubmission.data.source.remote.entity.Review
 import com.medialink.repoandlivesubmission.data.source.remote.entity.Video
 import com.medialink.repoandlivesubmission.data.source.remote.entity.tvshow.TvShow
 import com.medialink.repoandlivesubmission.data.source.remote.repository.ITvRepository
-import com.medialink.repoandlivesubmission.data.source.remote.retrofit.ApiService
 import com.medialink.repoandlivesubmission.utils.EspressoIdlingResource
 import com.medialink.repoandlivesubmission.utils.Resource
 import kotlinx.coroutines.launch

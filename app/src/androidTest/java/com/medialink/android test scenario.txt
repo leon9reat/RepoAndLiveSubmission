@@ -32,10 +32,10 @@ MainActivityTest
         - memastikan snackbar dengan text "Share" tampil
 
     7. test_changeOrientation
-        - jeda 1 detik
         - ubah orientasi menjadi horizontal
-        - jeda 1 detaik
+        - memastikan recyclerview tampil
         - ubah orientasi menjadi vertical
+        - memastikan recyclerview tampil
 
     8. test_clickShowDetail
         - klik data pertama dari list yang tampil
@@ -49,13 +49,14 @@ MovieDetailFragmentTest
         - memastikan release date title sesuai
         - memastikan overview ditampilkan
         - memastikan overview title sesuai
+        - memastikan poster ditampilkan
+        - memastikan rating ditampilkan
+        - memastikan trailer dan review ditampilkan
 
     2. test_changeOrientation
-        - jeda 1 detik
         - ubah orientasi menjadi horizontal
         - pastikan title ditampilkan
         - memastikan nilai title sesuai
-        - jeda 1 detik
         - ubah orientasi menjadi vertikal
         - pastikan title ditampilkan
         - memastikan nilai title sesuai
@@ -68,13 +69,14 @@ TvShowDetailFragmentTest
         - memastikan first airing date title sesuai
         - memastikan overview ditampilkan
         - memastikan overview title sesuai
+        - memastikan poster ditampilkan
+        - memastikan rating ditampilkan
+        - memastikan trailer dan review ditampilkan
 
     2. test_changeOrientation
-        - jeda 1 detik
         - ubah orientasi menjadi horizontal
         - pastikan name ditampilkan
         - memastikan nilai name sesuai
-        - jeda 1 detik
         - ubah orientasi menjadi vertikal
         - pastikan name ditampilkan
         - memastikan nilai name sesuai

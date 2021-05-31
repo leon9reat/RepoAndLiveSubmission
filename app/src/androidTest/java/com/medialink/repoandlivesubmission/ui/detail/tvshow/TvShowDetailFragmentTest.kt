@@ -1,14 +1,14 @@
 package com.medialink.repoandlivesubmission.ui.detail.tvshow
 
+import android.app.Activity
 import android.content.Intent
-import android.os.SystemClock
+import android.content.pm.ActivityInfo
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.medialink.repoandlivesubmission.OrientationChangeAction
 import com.medialink.repoandlivesubmission.R
 import com.medialink.repoandlivesubmission.data.source.local.entity.Detail
 import com.medialink.repoandlivesubmission.ui.detail.DetailActivity
@@ -45,11 +45,14 @@ class TvShowDetailFragmentTest {
         7689
     )
 
+    private lateinit var myActivity: Activity
+
     @Before
     fun setUp() {
         val intent = Intent()
         intent.putExtra(DetailActivity.PARCEL_DETAIL, tvShow)
         mActivityTestRule.launchActivity(intent)
+        myActivity = mActivityTestRule.activity
         IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
     }
 
@@ -76,22 +79,24 @@ class TvShowDetailFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.tv_overview))
             .check(ViewAssertions.matches(ViewMatchers.withText(tvShow.overview)))
+
+        Espresso.onView(ViewMatchers.withId(R.id.iv_backdrop))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_rating))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.trailer_and_reviews))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     fun test_changeOrientation() {
-        SystemClock.sleep(1000)
-        Espresso.onView(ViewMatchers.isRoot())
-            .perform(OrientationChangeAction.orientationLandscape())
+        myActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         Espresso.onView(ViewMatchers.withId(R.id.tv_name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.tv_name))
             .check(ViewAssertions.matches(ViewMatchers.withText(tvShow.title)))
 
-        SystemClock.sleep(1000)
-        Espresso.onView(ViewMatchers.isRoot())
-            .perform(OrientationChangeAction.orientationPortrait())
-
+        myActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         Espresso.onView(ViewMatchers.withId(R.id.tv_name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.tv_name))
